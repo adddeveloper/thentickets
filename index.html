@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>thentickets ( Ticket Management System )</title>
-<meta name="description" content="thentickets: sell event tickets, 6% processing fee. Way cheaper than normal market rates of 10-30%.">
+<meta name="description" content="thentickets: sell event tickets, $0.79 + 5.65% fees. Way cheaper than normal market rates of 10-30%.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Special+Elite&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/main.css">
@@ -55,7 +55,7 @@ style="display: none;"
     <p class="lede">No "convenience" fee that changes at checkout, no surprise line item after you've already committed. This is the whole bill — every time.</p>
     <div class="fee-strip">
       <div class="ticket fee-tag no-notch">
-        <p class="amount">3.10%</p>
+        <p class="amount">$0.79 + 2.75%</p>
         <p class="name">Service fee</p>
       </div>
       <div class="ticket fee-tag no-notch">
@@ -63,7 +63,7 @@ style="display: none;"
         <p class="name">Processing fee</p>
       </div>
       <div class="ticket fee-tag total no-notch">
-        <p class="amount">6.00%</p>
+        <p class="amount">$0.79 + 5.65%</p>
         <p class="name">Total, on the ticket price</p>
       </div>
     </div>
@@ -123,10 +123,10 @@ style="display: none;"
 
           <div class="out-block">
             <h4>Gross sales</h4>
-            <div class="out-line"><span>Ticket price × quantity</span><span id="outGross">$0</span></div>
+            <div class="out-line"><span>Ticket price × quantity</span><div> </div><span id="outGross">$0</span></div>
 
             <h4>With thentickets</h4>
-            <div class="out-line"><span>Service (3.10%) + Processing (2.90%)</span><span id="outOurFee">$0</span></div>
+            <div class="out-line"><span>Service (<span id="svcPct">0%</span>) + Processing (2.90%)</span><span id="outOurFee">$0</span></div>
             <div class="out-line total"><span>You keep</span><span id="outOurNet">$0</span></div>
 
             <h4>With a typical marketplace</h4>
@@ -154,44 +154,33 @@ style="display: none;"
 <!-- ================= HOW IT WORKS ================= -->
 <section id="how">
   <div class="section-inner">
-    <p class="eyebrow">How a sale runs</p>
     <h2 class="head">List it, then it sells, then you're paid.</h2>
     <div class="stub-row">
       <div class="ticket stub-card no-notch">
-        <div class="num">STUB NO. 001 — LIST</div>
+        <div class="stub-icon icon-red" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.59 2.59A2 2 0 0 0 11.17 2H4a2 2 0 0 0-2 2v7.17a2 2 0 0 0 .59 1.41l9 9a2 2 0 0 0 2.82 0l7.17-7.17a2 2 0 0 0 0-2.82z"></path><circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"></circle></svg>
+        </div>
+        <div class="num">STEP 01: LIST</div>
         <h3>Set your price</h3>
-        <p>Enter what you're selling for. That's the number your buyer sees — we don't tack anything onto it before checkout.</p>
+        <p>Enter what you're selling for. That's the price your buyer sees at checkout.</p>
       </div>
       <div class="ticket stub-card no-notch">
-        <div class="num">STUB NO. 002 — SELL</div>
+        <div class="stub-icon icon-green" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+        </div>
+        <div class="num">STEP 02: SELL</div>
         <h3>Buyer checks out</h3>
-        <p>They pay the ticket price plus our 6.00% shown as two line items, service and processing. No other fees appear.</p>
+        <p>They pay the ticket price plus our fee, shown as two line items. Nothing else appears.</p>
       </div>
       <div class="ticket stub-card no-notch">
-        <div class="num">STUB NO. 003 — PAID</div>
+        <div class="stub-icon icon-gold" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+        </div>
+        <div class="num">STEP 03: PAID</div>
         <h3>You get paid</h3>
-        <p>Your payout lands minus only what you saw up front on the calculator above. What you calculated is what you get.</p>
+        <p>Your payout lands minus only the fee you saw up front. No surprises.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ================= COMPARE ================= -->
-<section id="compare">
-  <div class="section-inner">
-    <p class="eyebrow">Side by side</p>
-    <h2 class="head">Same ticket, different receipt.</h2>
-    <table class="compare">
-      <thead>
-        <tr><th></th><th>thentickets</th><th>Typical marketplace</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Fees, disclosed</td><td>2 fees, shown before you list</td><td>Often several, some at checkout</td></tr>
-        <tr><td>Total fee load</td><td>6.00%, fixed</td><td>Commonly 10%–25% combined</td></tr>
-        <tr><td>Where fees are calculated</td><td>Right on this page</td><td>Usually only in your cart</td></tr>
-      </tbody>
-    </table>
-    <p class="compare-note">Marketplace ranges above are general industry estimates for comparison purposes, not a claim about any specific competitor. Use the calculator's slider to test against a rate you've actually seen quoted.</p>
   </div>
 </section>
 
@@ -201,11 +190,14 @@ style="display: none;"
     <div class="foot-top">
       <div class="foot-mark"><img src="/favicon/android-chrome-192x192.png" alt=""></div>
       <div class="foot-links">
-        <a href="https://www.instagram.com/thentickets/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.instagram.com/thentickets/" target="_blank" rel="noopener" class="ig-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg>
+          Instagram
+        </a>
       </div>
     </div>
     <div class="barcode" style="width:100%; height:26px; margin-bottom:18px;" aria-hidden="true"></div>
-    <p class="foot-fine">thentickets · Service fee 3.10% + processing fee 2.90%, applied to ticket price at checkout, always shown before you list. Competitor figures referenced on this page are general estimates for illustrative comparison only. © 2026 thentickets</p>
+    <p class="foot-fine">thentickets · Service fee $0.79 + 2.75% + processing fee 2.90%, applied to ticket price at checkout, always shown before you list. Competitor figures referenced on this page are general estimates for illustrative comparison only. © 2026 thentickets</p>
   </div>
 </footer>
 
@@ -228,6 +220,7 @@ style="display: none;"
   const compFeeLabel = document.getElementById('compFeeLabel');
 
   const outGross = document.getElementById('outGross');
+  const svcPct = document.getElementById('svcPct');
   const outOurFee = document.getElementById('outOurFee');
   const outOurNet = document.getElementById('outOurNet');
   const outCompFee = document.getElementById('outCompFee');
@@ -236,7 +229,9 @@ style="display: none;"
   const stampAmount = document.getElementById('stampAmount');
   const stampPct = document.getElementById('stampPct');
 
-  const OUR_RATE = 0.031 + 0.029; // 6.00%
+  const SERVICE_FIXED = 0.79; // per ticket
+  const SERVICE_PCT = 0.0275; // of ticket price
+  const PROCESSING_PCT = 0.029; // of ticket price
 
   function fmt(n){
     return n.toLocaleString('en-US', {style:'currency', currency:'USD', maximumFractionDigits:0});
@@ -251,8 +246,10 @@ style="display: none;"
     compLabel.textContent = compRateEl.value + '%';
     compFeeLabel.textContent = 'Estimated fee (' + compRateEl.value + '%)';
 
+    svcPct.textContent = price > 0 ? ((SERVICE_FIXED / price + SERVICE_PCT) * 100).toFixed(2) + '%' : '0%';
+
     const gross = price * qty;
-    const ourFee = gross * OUR_RATE;
+    const ourFee = (SERVICE_FIXED + price * SERVICE_PCT) * qty + gross * PROCESSING_PCT;
     const ourNet = gross - ourFee;
     const compFee = gross * compRate;
     const compNet = gross - compFee;

@@ -139,7 +139,7 @@
   .fee-tag.total::before,.fee-tag.total::after{ background:var(--ink); }
 
   /* ================= CALCULATOR (receipt) ================= */
-  .receipt-wrap{ display:flex; justify-content:center; }
+  .receipt-wrap{ display:flex; }
   .receipt{
     width:100%; max-width:420px; background:var(--stock); padding:30px 26px 26px;
     font-family:'IBM Plex Mono', monospace; position:relative;
@@ -205,6 +205,14 @@
   /* ================= HOW IT WORKS ================= */
   .stub-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
   .stub-card{ padding:24px 20px 22px; overflow:visible; }
+  .stub-icon{
+    width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    margin:0 auto 16px; color:var(--stock);
+  }
+  .stub-icon svg{ width:30px; height:30px; }
+  .stub-icon.icon-red{ background:var(--stamp-red); }
+  .stub-icon.icon-green{ background:var(--stub-green); }
+  .stub-icon.icon-gold{ background:var(--foil-gold); }
   .stub-card .num{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; opacity:.55; margin-bottom:10px;}
   .stub-card h3{ font-family:'Anton', sans-serif; font-size:19px; margin:0 0 8px;}
   .stub-card p{ font-size:14px; line-height:1.55; margin:0; opacity:.85;}
@@ -227,8 +235,9 @@
   .foot-mark{ font-family:'Anton', sans-serif; font-size:22px; color:var(--stock);}
   .foot-mark .then{ color:var(--stamp-red); }
   .foot-links{ display:flex; gap:20px; font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase;}
-  .foot-links a{ text-decoration:none; color:#cfc4b3; border-bottom:1px dashed transparent;}
+  .foot-links a{ display:flex; align-items:center; gap:7px; text-decoration:none; color:#cfc4b3; border-bottom:1px dashed transparent;}
   .foot-links a:hover{ color:var(--foil-gold); border-color:var(--foil-gold);}
+  .foot-links a svg{ width:16px; height:16px; }
   .foot-fine{ font-size:11px; color:#8d8072; line-height:1.6; border-top:1px dashed rgba(255,255,255,.15); padding-top:18px;}
 
   @media (max-width:640px){
