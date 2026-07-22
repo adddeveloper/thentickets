@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <!--favicon  -->
+ <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png"> 
+ 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>thentickets ( Ticket Management System )</title>
+<meta name="description" content="thentickets: sell event tickets, 6% processing fee. Way cheaper than normal market rates of 10-30%.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Special+Elite&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<div class="utility">
+  <span>Proudly based in Charlottetown, PEI</span>
+  <a href="https://www.instagram.com/thentickets/" target="_blank" rel="noopener">@thentickets</a>
+</div>
+
+<!-- ================= HERO ================= -->
+<div class="hero">
+  <div class="wrap">
+    <div class="ticket hero-ticket" id="top">
+      <div class="stub"><span>ADMIT ONE</span></div>
+      <div class="hero-main">
+        <p class="kicker"><span>Sell live event tickets</span><span>·</span><span>No hidden fees.</span></p>
+        <h1 class="wordmark"><span class="then">then</span>tickets</h1>
+        <p class="tagline">List your ticket.</p>
+        <div class="cta-row">
+          <a href="start/" class="btn btn-solid">Start selling your tickets</a>
+          <a href="#calculator" class="btn btn-ghost">See what you'd save</a>
+        </div>
+        <div class="serial-row">
+          <div><div class="label">Serial</div><div class="value">NO. 000131</div></div>
+          <div><div class="label">Gate</div><div class="value">Any event, any city</div></div>
+          <div class="barcode" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= FEES ================= -->
+<section id="fees"
+style="display: none;"
+>
+  <div class="section-inner">
+    <p class="eyebrow">Here is what we charge</p>
+    <h2 class="head">Two fees. Printed right on the ticket.</h2>
+    <p class="lede">No "convenience" fee that changes at checkout, no surprise line item after you've already committed. This is the whole bill — every time.</p>
+    <div class="fee-strip">
+      <div class="ticket fee-tag no-notch">
+        <p class="amount">3.10%</p>
+        <p class="name">Service fee</p>
+      </div>
+      <div class="ticket fee-tag no-notch">
+        <p class="amount">2.90%</p>
+        <p class="name">Processing fee</p>
+      </div>
+      <div class="ticket fee-tag total no-notch">
+        <p class="amount">6.00%</p>
+        <p class="name">Total, on the ticket price</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CALCULATOR ================= -->
+<section id="calculator">
+  <div class="section-inner">
+    <p class="eyebrow">Do the math with us</p>
+    <h2 class="head">What we charge</h2>
+    <p class="lede">
+      No "convenience" fee that changes at checkout, no surprise line item after you've already committed. This is the whole bill.
+    </p>
+
+    <div class="receipt-wrap">
+      <div class="ticket receipt no-notch">
+        <p class="receipt-title">★ Savings Receipt ★</p>
+        <p class="receipt-sub">thentickets vs. typical marketplace</p>
+
+        <div class="step-indicator" id="stepIndicator">
+          <div class="step-dot" data-step="1"><span class="dot">1</span><span class="step-label">Price</span></div>
+          <div class="step-track"></div>
+          <div class="step-dot" data-step="2"><span class="dot">2</span><span class="step-label">Qty</span></div>
+          <div class="step-track"></div>
+          <div class="step-dot" data-step="3"><span class="dot">3</span><span class="step-label">Compare</span></div>
+          <div class="step-track"></div>
+          <div class="step-dot" data-step="4"><span class="dot">4</span><span class="step-label">Receipt</span></div>
+        </div>
+
+        <div class="step-panel" data-panel="1">
+          <div class="field">
+            <label><span>Ticket price</span><span>USD</span></label>
+            <input type="number" id="price" min="0" step="1" value="75">
+          </div>
+          <p class="step-hint">What's this ticket selling for?</p>
+        </div>
+
+        <div class="step-panel" data-panel="2" hidden>
+          <div class="field">
+            <label><span>Tickets you're selling</span><span id="qtyLabel">120</span></label>
+            <input type="range" id="qty" min="1" max="2000" step="1" value="120">
+          </div>
+          <p class="step-hint">Drag to match how many you're moving.</p>
+        </div>
+
+        <div class="step-panel" data-panel="3" hidden>
+          <div class="field">
+            <label><span>Typical marketplace fee</span><span class="range-val" id="compLabel">15%</span></label>
+            <input type="range" id="compRate" min="5" max="30" step="0.5" value="15">
+          </div>
+          <p class="step-hint">A general estimate — drag to match a platform you've actually seen quoted.</p>
+        </div>
+
+        <div class="step-panel" data-panel="4" hidden>
+          <div class="tear" aria-hidden="true"></div>
+
+          <div class="out-block">
+            <h4>Gross sales</h4>
+            <div class="out-line"><span>Ticket price × quantity</span><span id="outGross">$0</span></div>
+
+            <h4>With thentickets</h4>
+            <div class="out-line"><span>Service (3.10%) + Processing (2.90%)</span><span id="outOurFee">$0</span></div>
+            <div class="out-line total"><span>You keep</span><span id="outOurNet">$0</span></div>
+
+            <h4>With a typical marketplace</h4>
+            <div class="out-line"><span id="compFeeLabel">Estimated fee (15%)</span><span id="outCompFee">$0</span></div>
+            <div class="out-line total"><span>They'd keep for you</span><span id="outCompNet">$0</span></div>
+          </div>
+
+          <div class="stamp" id="stamp">
+            <span class="big" id="stampAmount">YOU SAVE $0</span>
+            <span class="small" id="stampPct">0% MORE IN YOUR POCKET</span>
+          </div>
+
+          <p class="disclaimer">Typical marketplace fee is an editable estimate for comparison — real-world combined buyer+seller fees on other platforms commonly range from about 10% to 25% depending on the event and platform.</p>
+        </div>
+
+        <div class="step-nav">
+          <button type="button" class="btn btn-ghost small" id="btnBack" hidden>Back</button>
+          <button type="button" class="btn btn-solid small" id="btnNext">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section id="how">
+  <div class="section-inner">
+    <p class="eyebrow">How a sale runs</p>
+    <h2 class="head">List it, then it sells, then you're paid.</h2>
+    <div class="stub-row">
+      <div class="ticket stub-card no-notch">
+        <div class="num">STUB NO. 001 — LIST</div>
+        <h3>Set your price</h3>
+        <p>Enter what you're selling for. That's the number your buyer sees — we don't tack anything onto it before checkout.</p>
+      </div>
+      <div class="ticket stub-card no-notch">
+        <div class="num">STUB NO. 002 — SELL</div>
+        <h3>Buyer checks out</h3>
+        <p>They pay the ticket price plus our 6.00% shown as two line items, service and processing. No other fees appear.</p>
+      </div>
+      <div class="ticket stub-card no-notch">
+        <div class="num">STUB NO. 003 — PAID</div>
+        <h3>You get paid</h3>
+        <p>Your payout lands minus only what you saw up front on the calculator above. What you calculated is what you get.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPARE ================= -->
+<section id="compare">
+  <div class="section-inner">
+    <p class="eyebrow">Side by side</p>
+    <h2 class="head">Same ticket, different receipt.</h2>
+    <table class="compare">
+      <thead>
+        <tr><th></th><th>thentickets</th><th>Typical marketplace</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Fees, disclosed</td><td>2 fees, shown before you list</td><td>Often several, some at checkout</td></tr>
+        <tr><td>Total fee load</td><td>6.00%, fixed</td><td>Commonly 10%–25% combined</td></tr>
+        <tr><td>Where fees are calculated</td><td>Right on this page</td><td>Usually only in your cart</td></tr>
+      </tbody>
+    </table>
+    <p class="compare-note">Marketplace ranges above are general industry estimates for comparison purposes, not a claim about any specific competitor. Use the calculator's slider to test against a rate you've actually seen quoted.</p>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div class="foot-mark"><img src="/favicon/android-chrome-192x192.png" alt=""></div>
+      <div class="foot-links">
+        <a href="https://www.instagram.com/thentickets/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <div class="barcode" style="width:100%; height:26px; margin-bottom:18px;" aria-hidden="true"></div>
+    <p class="foot-fine">thentickets · Service fee 3.10% + processing fee 2.90%, applied to ticket price at checkout, always shown before you list. Competitor figures referenced on this page are general estimates for illustrative comparison only. © 2026 thentickets</p>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="6 11 12 5 18 11"></polyline></svg>
+</button>
+
+<script>
+  const toTopBtn = document.getElementById('toTop');
+  window.addEventListener('scroll', () => {
+    toTopBtn.classList.toggle('show', window.scrollY > 500);
+  });
+  toTopBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+  const priceEl = document.getElementById('price');
+  const qtyEl = document.getElementById('qty');
+  const qtyLabel = document.getElementById('qtyLabel');
+  const compRateEl = document.getElementById('compRate');
+  const compLabel = document.getElementById('compLabel');
+  const compFeeLabel = document.getElementById('compFeeLabel');
+
+  const outGross = document.getElementById('outGross');
+  const outOurFee = document.getElementById('outOurFee');
+  const outOurNet = document.getElementById('outOurNet');
+  const outCompFee = document.getElementById('outCompFee');
+  const outCompNet = document.getElementById('outCompNet');
+  const stamp = document.getElementById('stamp');
+  const stampAmount = document.getElementById('stampAmount');
+  const stampPct = document.getElementById('stampPct');
+
+  const OUR_RATE = 0.031 + 0.029; // 6.00%
+
+  function fmt(n){
+    return n.toLocaleString('en-US', {style:'currency', currency:'USD', maximumFractionDigits:0});
+  }
+
+  function calc(){
+    const price = Math.max(0, parseFloat(priceEl.value) || 0);
+    const qty = Math.max(1, parseInt(qtyEl.value) || 1);
+    const compRate = Math.max(0, parseFloat(compRateEl.value) || 0) / 100;
+
+    qtyLabel.textContent = qty.toLocaleString('en-US');
+    compLabel.textContent = compRateEl.value + '%';
+    compFeeLabel.textContent = 'Estimated fee (' + compRateEl.value + '%)';
+
+    const gross = price * qty;
+    const ourFee = gross * OUR_RATE;
+    const ourNet = gross - ourFee;
+    const compFee = gross * compRate;
+    const compNet = gross - compFee;
+    const savings = compFee - ourFee;
+    const savingsPct = compFee > 0 ? (savings / compFee) * 100 : 0;
+
+    outGross.textContent = fmt(gross);
+    outOurFee.textContent = fmt(ourFee);
+    outOurNet.textContent = fmt(ourNet);
+    outCompFee.textContent = fmt(compFee);
+    outCompNet.textContent = fmt(compNet);
+
+    if(gross > 0 && savings > 0){
+      stampAmount.textContent = 'YOU SAVE ' + fmt(savings);
+      stampPct.textContent = Math.round(savingsPct) + '% MORE IN YOUR POCKET';
+      stamp.classList.add('show');
+    } else {
+      stamp.classList.remove('show');
+    }
+  }
+
+  [priceEl, qtyEl, compRateEl].forEach(el => el.addEventListener('input', calc));
+  calc();
+
+  // ---- step wizard ----
+  const totalSteps = 4;
+  let currentStep = 1;
+  const panels = document.querySelectorAll('.step-panel');
+  const dots = document.querySelectorAll('.step-dot');
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+
+  function renderStep(){
+    panels.forEach(p => { p.hidden = (parseInt(p.dataset.panel) !== currentStep); });
+    dots.forEach(d => {
+      const n = parseInt(d.dataset.step);
+      d.classList.toggle('active', n === currentStep);
+      d.classList.toggle('done', n < currentStep);
+    });
+    btnBack.hidden = currentStep === 1;
+    btnNext.textContent = currentStep === totalSteps ? 'Start over' : 'Next';
+    if(currentStep === totalSteps) calc();
+  }
+
+  btnNext.addEventListener('click', () => {
+    if(currentStep === totalSteps){ currentStep = 1; }
+    else { currentStep += 1; }
+    renderStep();
+  });
+  btnBack.addEventListener('click', () => {
+    if(currentStep > 1){ currentStep -= 1; renderStep(); }
+  });
+  dots.forEach(d => {
+    d.style.cursor = 'pointer';
+    d.addEventListener('click', () => {
+      const n = parseInt(d.dataset.step);
+      if(n <= currentStep || n === currentStep + 1 || dots[n-2]?.classList.contains('done')){
+        currentStep = n; renderStep();
+      }
+    });
+  });
+
+  renderStep();
+</script>
+
+</body>
+</html>

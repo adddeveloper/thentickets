@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <!--favicon  -->
+ <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png"> 
+ 
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>thentickets ( Ticket Management System )</title>
+<meta name="description" content="thentickets: sell event tickets, 6% processing fee. Way cheaper than normal market rates of 10-30%.">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Special+Elite&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== GLOBAL RESET & BASE ===== */
+        :root {
+            --ink: #201c19;
+            --ink-soft: #2c2622;
+            --stock: #ecdcae;
+            --stock-dim: #e0cd97;
+            --stamp-red: #a7332a;
+            --stub-green: #2c4a34;
+            --foil-gold: #c69a2e;
+            --line: rgba(32, 28, 25, 0.22);
+            --paper-shadow: 0 18px 40px rgba(0, 0, 0, 0.35), 0 2px 0 rgba(0, 0, 0, 0.15);
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ===== BACK LINK ===== */
+        .back-link {
+            max-width: 880px;
+            margin: 20px auto 0 auto;
+            padding: 8px 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            letter-spacing: .06em;
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-link a {
+            color: #cfc4b3;
+            border-bottom: 1px dashed #cfc4b3;
+            padding-bottom: 2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .back-link a:hover {
+            color: var(--foil-gold);
+            border-color: var(--foil-gold);
+        }
+        .back-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ===== MAIN WRAP ===== */
+        .page-wrap {
+            flex: 1;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 20px 20px 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ===== TICKET CARD ===== */
+        .ticket {
+            position: relative;
+            background: var(--stock);
+            box-shadow: var(--paper-shadow);
+            border-radius: 3px;
+            padding: 34px 30px 30px;
+        }
+        .ticket::before,
+        .ticket::after {
+            content: "";
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--ink);
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06) inset;
+        }
+        .ticket::before {
+            left: -13px;
+        }
+        .ticket::after {
+            right: -13px;
+        }
+
+        /* ===== STEP INDICATOR ===== */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 28px;
+            gap: 0;
+        }
+        .step-dot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 0 0 auto;
+            cursor: pointer;
+            position: relative;
+        }
+        .step-dot .dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2.5px solid var(--ink);
+            opacity: .3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'IBM Plex Mono', monospace;
+            background: transparent;
+            transition: background .2s ease, opacity .2s ease, color .2s ease, border-color .2s ease;
+        }
+        .step-dot .step-label {
+            font-size: 9px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .35;
+            transition: opacity .2s ease, color .2s ease;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 500;
+        }
+        .step-dot.active .dot {
+            background: var(--stamp-red);
+            border-color: var(--stamp-red);
+            color: var(--stock);
+            opacity: 1;
+        }
+        .step-dot.active .step-label {
+            opacity: 1;
+            color: var(--stamp-red);
+            font-weight: 700;
+        }
+        .step-dot.done .dot {
+            background: var(--stub-green);
+            border-color: var(--stub-green);
+            color: var(--stock);
+            opacity: .85;
+        }
+        .step-dot.done .step-label {
+            opacity: .7;
+            color: var(--stub-green);
+        }
+        .step-track {
+            flex: 1 1 auto;
+            height: 2.5px;
+            background: var(--line);
+            margin: 0 2px 18px;
+            border-radius: 2px;
+            transition: background .3s ease;
+        }
+        .step-track.done {
+            background: var(--stub-green);
+        }
+
+        /* ===== STEP PANELS ===== */
+        .step-panel {
+            display: block;
+        }
+        .step-panel[hidden] {
+            display: none !important;
+        }
+
+        .panel-headline {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(24px, 3.4vw, 32px);
+            margin: 0 0 6px;
+            line-height: 1.05;
+            color: var(--ink);
+        }
+        .panel-sub {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            opacity: .65;
+            margin: 0 0 22px;
+            line-height: 1.5;
+        }
+
+        /* ===== FORM FIELDS ===== */
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .field label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            opacity: .7;
+            font-weight: 600;
+        }
+        .field label .optional {
+            font-weight: 400;
+            opacity: .5;
+            text-transform: none;
+            letter-spacing: 0;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 11px;
+        }
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            padding: 10px 13px;
+            border: 2px solid var(--ink);
+            background: #fbf4de;
+            color: var(--ink);
+            border-radius: 2px;
+            transition: border-color .15s ease, box-shadow .15s ease;
+        }
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--stamp-red);
+            box-shadow: 0 0 0 3px rgba(167, 51, 42, 0.15);
+        }
+        .field textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .field input[type="date"] {
+            min-height: 46px;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        .field select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23201c19' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px;
+        }
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .field-row.three {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .small-note {
+            font-size: 12px;
+            opacity: .55;
+            margin-top: 6px;
+            line-height: 1.5;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        /* ===== STEP NAV ===== */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--line);
+        }
+        .btn {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: 14px 28px;
+            border-radius: 2px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid var(--ink);
+            transition: transform .15s ease, background .15s ease, opacity .15s ease;
+            background: transparent;
+            color: var(--ink);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: .4;
+            pointer-events: none;
+            transform: none;
+        }
+        .btn-solid {
+            background: var(--ink);
+            color: var(--stock);
+        }
+        .btn-solid:hover {
+            background: var(--ink);
+        }
+        .btn-primary {
+            background: var(--stamp-red);
+            border-color: var(--stamp-red);
+            color: var(--stock);
+        }
+        .btn-primary:hover {
+            background: #8f2c24;
+            border-color: #8f2c24;
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--ink);
+        }
+        .btn-ghost:hover {
+            background: rgba(32, 28, 25, .06);
+        }
+        .btn .arrow {
+            display: inline-block;
+            transition: transform .2s ease;
+        }
+        .btn:hover .arrow {
+            transform: translateX(3px);
+        }
+        .btn .arrow-back {
+            display: inline-block;
+            transition: transform .2s ease;
+        }
+        .btn:hover .arrow-back {
+            transform: translateX(-3px);
+        }
+
+        /* ===== REVIEW STEP ===== */
+        .review-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin: 6px 0 10px;
+        }
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dotted var(--line);
+            font-size: 14px;
+        }
+        .review-item .rev-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            opacity: .55;
+            font-weight: 600;
+        }
+        .review-item .rev-value {
+            font-weight: 500;
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+        .review-item .rev-value.empty {
+            opacity: .3;
+            font-style: italic;
+        }
+        .review-divider {
+            border-top: 2px dashed var(--line);
+            margin: 8px 0 4px;
+            padding-top: 4px;
+        }
+
+        .review-account {
+            background: rgba(44, 74, 52, 0.08);
+            border-radius: 3px;
+            padding: 12px 14px;
+            margin: 6px 0 4px;
+            font-size: 13px;
+            border-left: 3px solid var(--stub-green);
+        }
+        .review-account strong {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            opacity: .6;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* ===== THANK YOU OVERLAY ===== */
+        .thankyou-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(32, 28, 25, 0.85);
+            /* backdrop-filter: blur(6px); */
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .thankyou-overlay.show {
+            display: flex;
+        }
+        .thankyou-card {
+            background: var(--stock);
+            max-width: 480px;
+            width: 100%;
+            padding: 40px 34px 36px;
+            border-radius: 3px;
+            box-shadow: var(--paper-shadow);
+            text-align: center;
+            position: relative;
+        }
+        .thankyou-card::before,
+        .thankyou-card::after {
+            content: "";
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--ink);
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06) inset;
+        }
+        .thankyou-card::before {
+            left: -13px;
+        }
+        .thankyou-card::after {
+            right: -13px;
+        }
+        .thankyou-card .big-icon {
+            font-size: 52px;
+            line-height: 1;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .thankyou-card h2 {
+            font-family: 'Anton', sans-serif;
+            font-size: 30px;
+            margin: 0 0 8px;
+            color: var(--stub-green);
+        }
+        .thankyou-card p {
+            font-size: 15px;
+            line-height: 1.6;
+            opacity: .75;
+            margin: 0 0 20px;
+        }
+        .thankyou-card .btn {
+            margin-top: 4px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .ticket {
+                padding: 22px 18px 24px;
+            }
+            .ticket::before,
+            .ticket::after {
+                width: 20px;
+                height: 20px;
+            }
+            .ticket::before {
+                left: -10px;
+            }
+            .ticket::after {
+                right: -10px;
+            }
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+            .field-row.three {
+                grid-template-columns: 1fr;
+            }
+            .step-nav {
+                flex-wrap: wrap;
+            }
+            .step-nav .btn {
+                flex: 1 1 auto;
+                padding: 12px 16px;
+                font-size: 11px;
+                justify-content: center;
+            }
+            .step-indicator {
+                gap: 0;
+            }
+            .step-dot .step-label {
+                font-size: 7px;
+            }
+            .step-dot .dot {
+                width: 26px;
+                height: 26px;
+                font-size: 11px;
+            }
+            .review-item {
+                font-size: 13px;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .review-item .rev-value {
+                max-width: 100%;
+                text-align: left;
+                width: 100%;
+            }
+            .thankyou-card {
+                padding: 30px 20px 28px;
+            }
+            .thankyou-card::before,
+            .thankyou-card::after {
+                width: 20px;
+                height: 20px;
+            }
+            .thankyou-card::before {
+                left: -10px;
+            }
+            .thankyou-card::after {
+                right: -10px;
+            }
+            .utility {
+                font-size: 10px;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .back-link {
+                font-size: 11px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .btn .spinner {
+            width: 16px;
+            height: 16px;
+            border-width: 2px;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+    <!-- ===== UTILITY BAR ===== -->
+    <div class="utility">
+        <span>Proudly based in Charlottetown, PEI</span>
+        <a href="https://www.instagram.com/thentickets/" target="_blank" rel="noopener">@thentickets</a>
+    </div>
+
+    <!-- ===== BACK LINK ===== -->
+    <div class="back-link">
+        <a href="/">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back to home
+        </a>
+    </div>
+
+    <!-- ===== MAIN ===== -->
+    <div class="page-wrap">
+        <div class="thankyou-card">
+            <span class="big-icon"></span>
+            <h2>Listing submitted!</h2>
+            <p>Your ticket listing is on its way. We'll email you a confirmation and next steps shortly.</p>
+            <a href="/" class="btn btn-solid">Return home</a>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="foot-inner">
+            <div class="foot-top">
+                <div class="foot-mark"><img src="/favicon/android-chrome-192x192.png" alt=""></div>
+                <div class="foot-links">
+                    <a href="https://www.instagram.com/thentickets/" target="_blank" rel="noopener">Instagram</a>
+                </div>
+            </div>
+            <div class="barcode" aria-hidden="true"></div>
+            <p class="foot-fine">thentickets · Service fee 3.10% + processing fee 2.90%, applied to ticket price at checkout, always shown before you list. Competitor figures referenced on this page are general estimates for illustrative comparison only. © 2026 thentickets</p>
+        </div>
+    </footer>
+</body>
+</html>
